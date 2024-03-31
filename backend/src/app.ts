@@ -8,7 +8,6 @@ import jwtMain from 'jsonwebtoken';
 import expressFileUploadMiddleware, { UploadedFile } from 'express-fileupload';
 import { Readable } from 'stream';
 import { dynamicCsvModel } from './models';
-import { promisify } from 'util';
 
 dotenv.config();
 
@@ -24,8 +23,7 @@ app.use(jwt({
     algorithms: ['HS256']
 }).unless({
     path: [
-        '/auth',
-        '/sign-up',
+        '/auth'
     ]
 }));
 
