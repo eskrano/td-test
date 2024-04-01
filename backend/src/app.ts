@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import express from 'express';
+import express, { ErrorRequestHandler } from 'express';
 import cors from 'cors';
 import { expressjwt as jwt } from 'express-jwt';
 import process from 'process';
@@ -26,6 +26,16 @@ app.use(jwt({
         '/auth'
     ]
 }));
+
+const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
+    if (err.name === 'UnauthorizedError') {
+        res.status(401).json({ message: 'Invalid token' });
+    } else {
+        next(err);
+    }
+}
+
+app.use(errorHandler);
 
 
 app.post('/auth', async (req, res) => {
